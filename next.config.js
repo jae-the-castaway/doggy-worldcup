@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {};
+const apiKey = process.env.API_KEY;
 
-module.exports = nextConfig
+module.exports = {};
