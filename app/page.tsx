@@ -16,10 +16,6 @@ export default async function Home() {
   );
   const res = await data.json();
 
-  // const dogs: DogArray = Object.keys(res).map((key) => {
-  //   return res[key];
-  // });
-
   return (
     <main>
       <h1>Doggy World Cup</h1>
