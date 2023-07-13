@@ -17,8 +17,8 @@ export default async function Home() {
   const res = await data.json();
 
   return (
-    <main>
-      <h1>Doggy World Cup</h1>
+    <main className="h-screen">
+
       <Match dogs={res} />
     </main>
   );
