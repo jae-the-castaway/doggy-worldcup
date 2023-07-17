@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { lilitaOne } from "./fonts";
 import GraphBar from "./GraphBar";
@@ -21,55 +21,52 @@ export default function Match(res: any) {
 
   const [round, setRound] = useState<number>(0);
   const [roundName, setRoundName] = useState<string>("Round of 16");
-  const [candidates, setCandidates] = useState<object[]>(
-    dogs.slice(2, dogs.length)
-  );
+  const [candidates, setCandidates] = useState<object[]>(dogs);
   const [match, setMatch] = useState<object[]>(firstCandidates);
-  const [winner, setWinner] = useState<object>({});
-  const [target, setTarget] = useState<"0" | "1">("0");
+  const [winner, setWinner] = useState<object | null>(null);
+  const [target, setTarget] = useState<"0" | "1" | undefined>(undefined);
 
   const handleMatch = (e: any) => {
     if (round < 15) {
       const key = e.target.getAttribute("data-id");
-      setRound((prev) => prev + 1);
       setTarget(key);
-
-      if (candidates.length > 2) {
-        setCandidates((prev) => [...prev.slice(2), match[target]]);
-      } else if (candidates.length === 2) {
-        setCandidates((prev) => [...prev.slice(1), match[target]]);
-      } else if (candidates.length === 1) {
-        setCandidates((prev) => [...prev, match[target]]);
-      }
+      setRound((prev) => prev + 1);
+      // set target
     }
   };
 
   useEffect(() => {
-    roundSwitch(round);
-    // console.log("round", round);
-    console.log("candidates", candidates);
-    // console.log("match", match);
+    console.log("target", target);
+    if (candidates.length > 1 && target) {
+      setCandidates((prev) => [...prev.slice(2), match[target]]);
+    }
+    if (candidates.length === 1 && target) {
+    }
+    if (candidates.length === 1 && target) {
+      setCandidates((prev) => [...prev, match[target]]);
+    }
+  }, [round]);
 
+  useEffect(() => {
+    console.log("candidates", candidates);
     // only when candidates are not empty, set match
 
-    if (round === 15) {
+    if (round === 15 && target) {
       setWinner(match[target]);
-    } else {
+    } else if (candidates.length > 1 && target) {
+      roundSwitch(round);
       setMatch(candidates.slice(0, 2));
     }
   }, [candidates]);
 
+  // after set a target, setCandidates with the target and then time to delete the first two candidates from it when..?
+  useEffect(() => {
+    console.log("match", match);
+  }, [match]);
+
   useEffect(() => {
     console.log("winner", winner);
   }, [winner]);
-
-  // after set a target, setCandidates with the target and then time to delete the first two candidates from it when..?
-  // useEffect(() => {
-  //   console.log("target", target);
-  //   if (candidates.length >= 2) {
-
-  //   }
-  // }, [target]);
 
   const roundSwitch = (round: number) => {
     if (round >= 0) {
@@ -112,7 +109,7 @@ export default function Match(res: any) {
               <div
                 onClick={handleMatch}
                 className={
-                  " bg-slate-900 cursor-pointer h-full  rounded-md  overflow-hidden items-center" +
+                  "group bg-slate-900 cursor-pointer h-full  rounded-md  overflow-hidden items-center" +
                   index
                 }
                 data-id={index}
@@ -124,18 +121,31 @@ export default function Match(res: any) {
                 >
                   {dog.breeds[0].name}
                 </h2>
-                <Image
-                  data-id={index}
-                  className={
-                    "rounded-md top-1/2 relative -translate-y-1/2 " + index
-                  }
-                  // fill={true}
-                  priority
-                  width={1000}
-                  height={1000}
-                  alt={dog.breeds[0].name}
-                  src={dog.url}
-                />
+                <div className=" relative rounded-md top-1/2 -translate-y-1/2">
+                  {" "}
+                  <Image
+                    data-id={index}
+                    className={" z-10 absolute rounded-md  transition-all"}
+                    // fill={true}
+                    priority
+                    width={1000}
+                    height={1000}
+                    alt={dog.breeds[0].name}
+                    src={dog.url}
+                  />
+                  <Image
+                    data-id={index}
+                    className={
+                      " z-0 relative rounded-md group-hover:blur-lg transition-all"
+                    }
+                    // fill={true}
+                    priority
+                    width={1000}
+                    height={1000}
+                    alt={dog.breeds[0].name}
+                    src={dog.url}
+                  />
+                </div>
               </div>
             )}
           </div>
