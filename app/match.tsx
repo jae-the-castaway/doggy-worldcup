@@ -4,6 +4,7 @@ import Image from "next/image";
 import { lilitaOne } from "./fonts";
 import GraphBar from "./GraphBar";
 import { setTextRange } from "typescript";
+import { cache } from "react";
 
 interface Dog {
   breeds: Array<object>;
@@ -12,6 +13,10 @@ interface Dog {
 }
 
 type DogArray = Array<Dog>;
+
+// continue from here
+// Using On-Demand Revalidation
+// to make a refresh button
 
 export default function Match(res: any) {
   let dogs: DogArray = Object.keys(res).map((key) => {
@@ -88,9 +93,15 @@ export default function Match(res: any) {
 
   return (
     <div className="h-full flex flex-col overflow-hidden bg-slate-950 ">
-      <div className=" h-10 z-10 text-center">
+      <div className=" h-10 z-10 text-center mb-2">
         <h1 className={`text-base ${lilitaOne.className}`}>Doggy Derby</h1>
         <div className="text-xs">{roundName}</div>
+        <button
+          className="absolute top-1 right-1 rounded-md bg-emerald-700 text-xs p-1 text-slate-100-700"
+          onClick={() => clearCacheData()}
+        >
+          Refresh
+        </button>
         <GraphBar round={round} />
       </div>
       <div className="flex h-full content-center overflow-hidden flex-col min-[400px]:flex-row ">

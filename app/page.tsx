@@ -18,7 +18,6 @@ export default async function Home() {
 
   return (
     <main className="h-screen">
-
       <Match dogs={res} />
     </main>
   );
