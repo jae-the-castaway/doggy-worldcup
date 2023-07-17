@@ -3,6 +3,7 @@ import { useState, useEffect, use } from "react";
 import Image from "next/image";
 import { lilitaOne } from "./fonts";
 import GraphBar from "./GraphBar";
+import { setTextRange } from "typescript";
 
 interface Dog {
   breeds: Array<object>;
@@ -25,14 +26,50 @@ export default function Match(res: any) {
   );
   const [match, setMatch] = useState<object[]>(firstCandidates);
   const [winner, setWinner] = useState<object>({});
+  const [target, setTarget] = useState<"0" | "1">("0");
+
+  const handleMatch = (e: any) => {
+    if (round < 15) {
+      const key = e.target.getAttribute("data-id");
+      setRound((prev) => prev + 1);
+      setTarget(key);
+
+      if (candidates.length > 2) {
+        setCandidates((prev) => [...prev.slice(2), match[target]]);
+      } else if (candidates.length === 2) {
+        setCandidates((prev) => [...prev.slice(1), match[target]]);
+      } else if (candidates.length === 1) {
+        setCandidates((prev) => [...prev, match[target]]);
+      }
+    }
+  };
 
   useEffect(() => {
     roundSwitch(round);
-    console.log("round", round);
+    // console.log("round", round);
     console.log("candidates", candidates);
-    console.log("match", match);
-    setMatch(candidates.slice(0, 2));
+    // console.log("match", match);
+
+    // only when candidates are not empty, set match
+
+    if (round === 15) {
+      setWinner(match[target]);
+    } else {
+      setMatch(candidates.slice(0, 2));
+    }
   }, [candidates]);
+
+  useEffect(() => {
+    console.log("winner", winner);
+  }, [winner]);
+
+  // after set a target, setCandidates with the target and then time to delete the first two candidates from it when..?
+  // useEffect(() => {
+  //   console.log("target", target);
+  //   if (candidates.length >= 2) {
+
+  //   }
+  // }, [target]);
 
   const roundSwitch = (round: number) => {
     if (round >= 0) {
@@ -52,34 +89,6 @@ export default function Match(res: any) {
     }
   };
 
-  const handleMatch = (e: any) => {
-    const key = e.target.getAttribute("data-id");
-
-    if (round < 14) {
-      let previousMatch = match[0];
-      let previousMatch2 = match[1];
-      if (key === "0") {
-        setCandidates((prev) => [...prev, previousMatch]);
-      }
-      if (key === "1") {
-        setCandidates((prev) => [...prev, previousMatch2]);
-      }
-      if (candidates.length >= 0) {
-        setCandidates((prev) => prev.slice(2));
-      }
-    }
-
-    if (round === 14) {
-      if (key === "0") {
-        setWinner(match[0]);
-      }
-      if (key === "1") {
-        setWinner(match[1]);
-      }
-    }
-    setRound((prev) => prev + 1);
-  };
-
   return (
     <div className="h-full flex flex-col overflow-hidden bg-slate-950 ">
       <div className=" h-10 z-10 text-center">
@@ -89,18 +98,15 @@ export default function Match(res: any) {
       </div>
       <div className="flex h-full content-center overflow-hidden flex-col min-[400px]:flex-row ">
         <p
-          className={`${
-            winner ? "hidden" : ""
-          } text-lg z-10 absolute left-1/2 top-1/2 translate-y-2.5 -translate-x-1/2  min-[400px]:-translate-x-2.5`}
+          className={` text-lg z-10 absolute left-1/2 top-1/2 translate-y-2.5 -translate-x-1/2  min-[400px]:-translate-x-2.5`}
         >
           VS
         </p>
         {match.map((dog: any, index) => (
           <div
             key={index}
-            className={`h-1/2 p-1 min-[400px]:h-full flex justify-center items-center content-center ${
-              winner ? "h-full" : ""
-            }`}
+            className={`h-1/2 p-1 min-[400px]:h-full flex justify-center items-center content-center`}
+            //  ${winner ? "h-full" : ""}
           >
             {dog.breeds && dog.breeds.length > 0 && (
               <div
@@ -112,9 +118,7 @@ export default function Match(res: any) {
                 data-id={index}
               >
                 <h2
-                  className={`${
-                    winner.id ? "hidden" : ""
-                  } text-xs absolute z-10 top-1/2 left-1/2 -translate-x-1/2 min-[400px]:translate-y-14 -translate-y-2 flex-0  ${
+                  className={` text-xs absolute z-10 top-1/2 left-1/2 -translate-x-1/2 min-[400px]:translate-y-14 -translate-y-2 flex-0  ${
                     index === 0 ? "min-[400px]:left-1/4 -translate-y-4" : ""
                   } ${index === 1 ? "min-[400px]:left-3/4 translate-y-8" : ""}`}
                 >
