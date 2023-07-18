@@ -94,17 +94,18 @@ export default function Match(res: any) {
 
   return (
     <div className="h-full flex flex-col overflow-hidden bg-slate-950 ">
-      {winner?.breeds?.[0] && (
+      {winner?.breeds?.[0] ? (
         <div className="opacity absolute h-full w-full bg-slate-800  z-30  ">
+          <div className="text-4xl drop-shadow-md absolute top-10 left-1/2 -translate-x-1/2"> Winner! 🎉</div>
           <Image
-            className={` relative rounded-md  z-30 my-auto top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-2`}
+            className={` relative rounded-md  z-30 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-2`}
             priority
             width={1000}
             height={1000}
             alt={winner.breeds?.[0].name}
             src={winner.url}
           />
-          <div className="flex gap-3 absolute mb-10 flex-col bottom-0 mx-5 h-full w-full justify-end items-center">
+          <div className="flex gap-3 absolute mb-10 flex-col bottom-0  h-full w-full justify-end items-center">
             <h2 className="z-50 text-3xl drop-shadow-md">
               {winner.breeds?.[0].name}
             </h2>
@@ -135,7 +136,7 @@ export default function Match(res: any) {
             </Link>
           </div>
         </div>
-      )}
+      ):""}
       <div className=" h-10 z-10 text-center mb-2">
         <h1 className={`text-base ${lilitaOne.className}`}>Doggy Derby</h1>
         <div className="text-xs">{roundName}</div>
