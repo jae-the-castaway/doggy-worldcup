@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { lilitaOne } from "./fonts";
 import GraphBar from "./GraphBar";
-import { setTextRange } from "typescript";
-import { cache } from "react";
+import Winner from "./winner";
+import Link from "next/link";
 
 interface Dog {
   breeds: Array<object>;
@@ -32,41 +32,42 @@ export default function Match(res: any) {
   const [target, setTarget] = useState<"0" | "1" | undefined>(undefined);
 
   const handleMatch = (e: any) => {
-    if (round < 15) {
+    if (
+      round < 16 &&
+      e.target.getAttribute("data-name") !==
+        candidates?.[candidates.length - 1].id
+    ) {
       const key = e.target.getAttribute("data-id");
       setTarget(key);
       setRound((prev) => prev + 1);
-      // set target
+      // e.target.classList.add("click-animation");
     }
   };
 
   useEffect(() => {
-    console.log("target", target);
+    // console.log("target", target);
     if (candidates.length > 1 && target) {
       setCandidates((prev) => [...prev.slice(2), match[target]]);
     }
     if (candidates.length === 1 && target) {
-    }
-    if (candidates.length === 1 && target) {
       setCandidates((prev) => [...prev, match[target]]);
     }
+    roundSwitch(round);
   }, [round]);
 
   useEffect(() => {
-    console.log("candidates", candidates);
+    // console.log("candidates", candidates);
     // only when candidates are not empty, set match
 
     if (round === 15 && target) {
       setWinner(match[target]);
     } else if (candidates.length > 1 && target) {
-      roundSwitch(round);
       setMatch(candidates.slice(0, 2));
     }
   }, [candidates]);
 
-  // after set a target, setCandidates with the target and then time to delete the first two candidates from it when..?
   useEffect(() => {
-    console.log("match", match);
+    // console.log("match", match);
   }, [match]);
 
   useEffect(() => {
@@ -83,25 +84,62 @@ export default function Match(res: any) {
     if (round > 11) {
       setRoundName("Semifinals");
     }
-    if (round > 13) {
+    if (round === 14) {
       setRoundName("Finals");
     }
-    if (round > 14) {
+    if (round === 15) {
       setRoundName("winner");
     }
   };
 
   return (
     <div className="h-full flex flex-col overflow-hidden bg-slate-950 ">
+      {winner?.breeds?.[0] && (
+        <div className="opacity absolute h-full w-full bg-slate-800  z-30  ">
+          <Image
+            className={` relative rounded-md  z-30 my-auto top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-2`}
+            priority
+            width={1000}
+            height={1000}
+            alt={winner.breeds?.[0].name}
+            src={winner.url}
+          />
+          <div className="flex gap-3 absolute mb-10 flex-col bottom-0 mx-5 h-full w-full justify-end items-center">
+            <h2 className="z-50 text-3xl drop-shadow-md">
+              {winner.breeds?.[0].name}
+            </h2>
+            <div className="z-50 flex flex-col items-center ">
+              <h3 className="z-50  drop-shadow-md ">
+                {winner.breeds?.[0].weight.imperial
+                  ? `Height : ${winner.breeds?.[0].weight.imperial} in`
+                  : ""}
+              </h3>
+              <h3 className="z-50   drop-shadow-md">
+                {winner.breeds?.[0].origin
+                  ? `Origin: ${winner.breeds?.[0].origin}`
+                  : ""}
+              </h3>
+              <h3 className="z-50  drop-shadow-md ">
+                {winner.breeds?.[0].temperament}
+              </h3>
+            </div>
+
+            <Link
+              title={`Wikipedia Link of ${winner.breeds?.[0].name}`}
+              className="z-50"
+              href={`https://en.wikipedia.org/wiki/${winner.breeds[0].name}`}
+            >
+              <button className=" bg-emerald-700 py-1 px-2 rounded-md">
+                Learn More
+              </button>
+            </Link>
+          </div>
+        </div>
+      )}
       <div className=" h-10 z-10 text-center mb-2">
         <h1 className={`text-base ${lilitaOne.className}`}>Doggy Derby</h1>
         <div className="text-xs">{roundName}</div>
-        <button
-          className="absolute top-1 right-1 rounded-md bg-emerald-700 text-xs p-1 text-slate-100-700"
-          onClick={() => clearCacheData()}
-        >
-          Refresh
-        </button>
+
         <GraphBar round={round} />
       </div>
       <div className="flex h-full content-center overflow-hidden flex-col min-[400px]:flex-row ">
@@ -110,6 +148,7 @@ export default function Match(res: any) {
         >
           VS
         </p>
+
         {match.map((dog: any, index) => (
           <div
             key={index}
@@ -120,13 +159,14 @@ export default function Match(res: any) {
               <div
                 onClick={handleMatch}
                 className={
-                  "group bg-slate-900 cursor-pointer h-full  rounded-md  overflow-hidden items-center" +
+                  " group bg-slate-900 cursor-pointer h-full  rounded-md  overflow-hidden items-center" +
                   index
                 }
                 data-id={index}
+                data-name={dog.id}
               >
                 <h2
-                  className={` text-xs absolute z-10 top-1/2 left-1/2 -translate-x-1/2 min-[400px]:translate-y-14 -translate-y-2 flex-0  ${
+                  className={`opacity text-xs absolute z-10 top-1/2 left-1/2 -translate-x-1/2 min-[400px]:translate-y-14 -translate-y-2 flex-0  ${
                     index === 0 ? "min-[400px]:left-1/4 -translate-y-4" : ""
                   } ${index === 1 ? "min-[400px]:left-3/4 translate-y-8" : ""}`}
                 >
@@ -136,7 +176,9 @@ export default function Match(res: any) {
                   {" "}
                   <Image
                     data-id={index}
-                    className={" z-10 absolute rounded-md  transition-all"}
+                    className={` z-10 absolute rounded-md ${
+                      index === 0 ? "slide-in-left" : "slide-in-right"
+                    }`}
                     // fill={true}
                     priority
                     width={1000}
@@ -146,9 +188,9 @@ export default function Match(res: any) {
                   />
                   <Image
                     data-id={index}
-                    className={
-                      " z-0 relative rounded-md group-hover:blur-lg transition-all"
-                    }
+                    className={` z-0 relative rounded-md group-hover:blur-lg transition-all slide-in-left ${
+                      index === 0 ? "slide-in-left" : "slide-in-right"
+                    } `}
                     // fill={true}
                     priority
                     width={1000}
