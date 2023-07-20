@@ -7,28 +7,30 @@ import Winner from "./winner";
 import Link from "next/link";
 
 interface Dog {
-  breeds: Array<object>;
+  breeds: Array<{
+    id: string;
+    name: string;
+    weight: { imperial: {} };
+    origin: string;
+    temperament: string;
+  }>;
   url: string;
   id: string;
 }
 
 type DogArray = Array<Dog>;
 
-// continue from here
-// Using On-Demand Revalidation
-// to make a refresh button
-
 export default function Match(res: any) {
   let dogs: DogArray = Object.keys(res).map((key) => {
     return res[key];
   })[0];
-  const firstCandidates = dogs.slice(0, 2);
+  const firstCandidates: Dog[] = dogs.slice(0, 2);
 
   const [round, setRound] = useState<number>(0);
   const [roundName, setRoundName] = useState<string>("Round of 16");
-  const [candidates, setCandidates] = useState<object[]>(dogs);
-  const [match, setMatch] = useState<object[]>(firstCandidates);
-  const [winner, setWinner] = useState<object | null>(null);
+  const [candidates, setCandidates] = useState<Dog[]>(dogs);
+  const [match, setMatch] = useState<Dog[]>(firstCandidates);
+  const [winner, setWinner] = useState<Dog | null>(null);
   const [target, setTarget] = useState<"0" | "1" | undefined>(undefined);
 
   const handleMatch = (e: any) => {
@@ -40,12 +42,11 @@ export default function Match(res: any) {
       const key = e.target.getAttribute("data-id");
       setTarget(key);
       setRound((prev) => prev + 1);
-      // e.target.classList.add("click-animation");
+      e.target.classList.add("click-animation");
     }
   };
 
   useEffect(() => {
-    // console.log("target", target);
     if (candidates.length > 1 && target) {
       setCandidates((prev) => [...prev.slice(2), match[target]]);
     }
@@ -56,9 +57,6 @@ export default function Match(res: any) {
   }, [round]);
 
   useEffect(() => {
-    // console.log("candidates", candidates);
-    // only when candidates are not empty, set match
-
     if (round === 15 && target) {
       setWinner(match[target]);
     } else if (candidates.length > 1 && target) {
@@ -66,9 +64,7 @@ export default function Match(res: any) {
     }
   }, [candidates]);
 
-  useEffect(() => {
-    // console.log("match", match);
-  }, [match]);
+  useEffect(() => {}, [match]);
 
   useEffect(() => {
     console.log("winner", winner);
@@ -96,7 +92,10 @@ export default function Match(res: any) {
     <div className="h-full flex flex-col overflow-hidden bg-slate-950 ">
       {winner?.breeds?.[0] ? (
         <div className="opacity absolute h-full w-full bg-slate-800  z-30  ">
-          <div className="text-4xl drop-shadow-md absolute top-10 left-1/2 -translate-x-1/2"> Winner! 🎉</div>
+          <div className="text-4xl drop-shadow-md absolute top-10 left-1/2 -translate-x-1/2">
+            {" "}
+            Winner! 🎉
+          </div>
           <Image
             className={` relative rounded-md  z-30 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-2`}
             priority
@@ -136,7 +135,9 @@ export default function Match(res: any) {
             </Link>
           </div>
         </div>
-      ):""}
+      ) : (
+        ""
+      )}
       <div className=" h-10 z-10 text-center mb-2">
         <h1 className={`text-base ${lilitaOne.className}`}>Doggy Derby</h1>
         <div className="text-xs">{roundName}</div>
@@ -180,7 +181,6 @@ export default function Match(res: any) {
                     className={` z-10 absolute rounded-md ${
                       index === 0 ? "slide-in-left" : "slide-in-right"
                     }`}
-                    // fill={true}
                     priority
                     width={1000}
                     height={1000}
@@ -192,7 +192,6 @@ export default function Match(res: any) {
                     className={` z-0 relative rounded-md group-hover:blur-lg transition-all slide-in-left ${
                       index === 0 ? "slide-in-left" : "slide-in-right"
                     } `}
-                    // fill={true}
                     priority
                     width={1000}
                     height={1000}
