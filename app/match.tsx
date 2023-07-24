@@ -162,7 +162,9 @@ export default function Match(res: any) {
                 <h2
                   className={`opacity text-xs absolute z-10 top-1/2 left-1/2 -translate-x-1/2 min-[400px]:translate-y-14 -translate-y-2 flex-0  ${
                     index === 0 ? "min-[400px]:left-1/4 -translate-y-4" : ""
-                  } ${index === 1 ? "min-[400px\\\]:left-3/4 translate-y-8" : ""}`}
+                  } ${
+                    index === 1 ? "min-[400px\\]:left-3/4 translate-y-8" : ""
+                  }`}
                 >
                   {dog.breeds[0].name}
                 </h2>
