@@ -1,12 +1,4 @@
-
 import Match from "./match";
-
-interface Dog {
-  breeds: object;
-  url: string;
-}
-
-type DogArray = Array<Dog>;
 
 const url =
   "https://api.thedogapi.com/v1/images/search?limit=16&has_breeds=1&order=random";
@@ -24,3 +16,5 @@ export default async function Home() {
     </main>
   );
 }
+
+// change env.local

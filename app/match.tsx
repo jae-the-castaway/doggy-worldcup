@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { lilitaOne } from "./fonts";
 import GraphBar from "./GraphBar";
-import Winner from "./winner";
 import Link from "next/link";
 
 interface Dog {
@@ -42,7 +41,6 @@ export default function Match(res: any) {
       const key = e.target.getAttribute("data-id");
       setTarget(key);
       setRound((prev) => prev + 1);
-      e.target.classList.add("click-animation");
     }
   };
 
@@ -63,12 +61,6 @@ export default function Match(res: any) {
       setMatch(candidates.slice(0, 2));
     }
   }, [candidates]);
-
-  useEffect(() => {}, [match]);
-
-  useEffect(() => {
-    console.log("winner", winner);
-  }, [winner]);
 
   const roundSwitch = (round: number) => {
     if (round >= 0) {
@@ -170,7 +162,7 @@ export default function Match(res: any) {
                 <h2
                   className={`opacity text-xs absolute z-10 top-1/2 left-1/2 -translate-x-1/2 min-[400px]:translate-y-14 -translate-y-2 flex-0  ${
                     index === 0 ? "min-[400px]:left-1/4 -translate-y-4" : ""
-                  } ${index === 1 ? "min-[400px]:left-3/4 translate-y-8" : ""}`}
+                  } ${index === 1 ? "min-[400px\\\]:left-3/4 translate-y-8" : ""}`}
                 >
                   {dog.breeds[0].name}
                 </h2>
