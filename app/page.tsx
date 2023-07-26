@@ -5,7 +5,7 @@ const url =
 
 export default async function Home() {
   const data = await fetch(`${url}&api_key=${process.env.API_KEY}`, {
-    next: { revalidate: 10 },
+    // next: { revalidate: 10 },
   });
   const res = await data.json();
 
