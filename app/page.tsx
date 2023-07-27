@@ -1,7 +1,9 @@
+import { type } from "os";
 import Match from "./match";
 
 const url =
   "https://api.thedogapi.com/v1/images/search?limit=16&has_breeds=1&order=random";
+
 
 export default async function Home() {
   const data = await fetch(`${url}&api_key=${process.env.API_KEY}`, {
@@ -11,7 +13,9 @@ export default async function Home() {
 
   return (
     <main className="h-screen">
-      <Match dogs={res} />
+      <Match res={res} />
     </main>
   );
 }
+
+// fix the typescript error

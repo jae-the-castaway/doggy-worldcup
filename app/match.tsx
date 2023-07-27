@@ -24,17 +24,17 @@ interface Dog {
 
 type DogArray = Array<Dog>;
 
-export default function Match({ res }: MatchProps ) {
-  let list: DogArray = Object.keys(res).map((key) => {
-    return res[key];
-  })[0];
+export default function Match({ res }: MatchProps) {
+  // let list: DogArray = Object.keys(res).map((key) => {
+  //   return res[key];
+  // })[0];
 
   // const firstCandidates: Dog[] = dogs.slice(0, 2);
 
   const [round, setRound] = useState<number>(0);
   const [roundName, setRoundName] = useState<string>("Round of 16");
   const [candidates, setCandidates] = useState<Dog[]>([]);
-  const [match, setMatch] = useState<Dog[]>(candidates.slice(0, 2));
+  const [match, setMatch] = useState<Dog[]>([]);
   const [winner, setWinner] = useState<Dog | null>(null);
   const [target, setTarget] = useState<"0" | "1" | undefined>(undefined);
 
@@ -51,7 +51,9 @@ export default function Match({ res }: MatchProps ) {
   };
 
   useEffect(() => {
-    setCandidates(list);
+    console.log(res);
+    setCandidates(res);
+    setMatch(res.slice(0, 2));
   }, []);
 
   useEffect(() => {
@@ -67,7 +69,8 @@ export default function Match({ res }: MatchProps ) {
   useEffect(() => {
     if (round === 15 && target) {
       setWinner(match[target]);
-    } else if (candidates.length > 1 && target) {
+    } else if (target) {
+      //candidates.length > 1 &&
       setMatch(candidates.slice(0, 2));
     }
   }, [candidates]);
@@ -137,9 +140,7 @@ export default function Match({ res }: MatchProps ) {
             </Link>
           </div>
         </div>
-      ) : (
-        null
-      )}
+      ) : null}
       <div className=" h-10 z-10 text-center mb-2">
         <h1 className={`text-base ${lilitaOne.className}`}>Doggy Derby</h1>
         <div className="text-xs">{roundName}</div>
