@@ -25,7 +25,6 @@ interface Dog {
 type DogArray = Array<Dog>;
 
 export default function Match({ res }: MatchProps) {
-
   const [round, setRound] = useState<number>(0);
   const [roundName, setRoundName] = useState<string>("Round of 16");
   const [candidates, setCandidates] = useState<Dog[]>([]);
@@ -34,6 +33,7 @@ export default function Match({ res }: MatchProps) {
   const [target, setTarget] = useState<"0" | "1" | undefined>(undefined);
 
   const handleMatch = (e: any) => {
+    console.log(e.target.getAttribute("data-name"));
     if (
       round < 16 &&
       e.target.getAttribute("data-name") !==
@@ -178,6 +178,7 @@ export default function Match({ res }: MatchProps) {
                   {" "}
                   <Image
                     data-id={index}
+                    data-name={dog.id}
                     className={` z-10 absolute rounded-md ${
                       index === 0 ? "slide-in-left" : "slide-in-right"
                     }`}
@@ -189,6 +190,7 @@ export default function Match({ res }: MatchProps) {
                   />
                   <Image
                     data-id={index}
+                    data-name={dog.id}
                     className={` z-0 relative rounded-md group-hover:blur-lg transition-all slide-in-left ${
                       index === 0 ? "slide-in-left" : "slide-in-right"
                     } `}
