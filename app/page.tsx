@@ -17,5 +17,3 @@ export default async function Home() {
     </main>
   );
 }
-
-// fix the typescript error
