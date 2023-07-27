@@ -1,10 +1,8 @@
 # Doggy Derby
 <p align="left">
-  <img src="./public/thumbnail-2.png" alt="" width=""/>
-    <img src="./public/thumbnail-1.png" alt="" width=""/>
+  <img src="./public/thumbnail-2.png" alt="" width="500px"/>
+    <img src="./public/thumbnail-1.png" alt="" width="500px"/>
 </p>
-![match image](./public/thumbnail-2.png)
-![winner image](./public/thumbnail-1.png)
 
 Play the tournament with a round of 16 featuring your favorite dog breeds. It randomly selects 16 different dog breeds from [The Dog API](https://www.thedogapi.com). You can see the final winner along with their information and a link to their Wikipedia page.
 
