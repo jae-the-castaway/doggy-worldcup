@@ -1,21 +1,14 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Doggy Derby
 
-## Getting Started
+Play the tournament with a round of 16 featuring your favorite dog breeds. It randomly selects 16 different dog breeds from [The Dog API](https://www.thedogapi.com). You can see the final winner along with their information and a link to their Wikipedia page.
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+## Users can...
+- click to choose a winner for tournament
+- see the winner with breed information
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Built With...
+- [Next.js](https://nextjs.org/)
+- [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app)
+- [The Dog API](https://www.thedogapi.com)
+- Tailwind
