@@ -92,12 +92,11 @@ export default function Match({ res }: MatchProps) {
     <div className="h-full flex flex-col overflow-hidden bg-slate-950 ">
       {winner?.breeds?.[0] ? (
         <div className="opacity absolute h-full w-full bg-slate-800  z-30  ">
-          <div className="text-4xl drop-shadow-md absolute top-10 left-1/2 -translate-x-1/2">
-            {" "}
+          <div className="text-4xl drop-shadow-md absolute top-10 left-1/2 z-40 -translate-x-1/2">
             Winner! 🎉
           </div>
           <Image
-            className={` relative rounded-md  z-30 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-2`}
+            className={` relative rounded-md w-full z-30 top-1/2 min-[400px]:max-h-[400px] min-[400px]:w-auto  left-1/2 -translate-x-1/2 -translate-y-1/2 p-2`}
             priority
             width={1000}
             height={1000}
@@ -152,7 +151,7 @@ export default function Match({ res }: MatchProps) {
         {match.map((dog: any, index) => (
           <div
             key={index}
-            className={`h-1/2 p-1 min-[400px]:h-full flex justify-center items-center content-center`}
+            className={`h-1/2 p-1 min-[400px]:h-full flex justify-center items-center content-center `}
             //  ${winner ? "h-full" : ""}
           >
             {dog.breeds && dog.breeds.length > 0 && (
@@ -168,9 +167,7 @@ export default function Match({ res }: MatchProps) {
                 <h2
                   className={`opacity text-xs absolute z-10 top-1/2 left-1/2 -translate-x-1/2 min-[400px]:translate-y-14 -translate-y-2 flex-0  ${
                     index === 0 ? "min-[400px]:left-1/4 -translate-y-4" : ""
-                  } ${
-                    index === 1 ? "min-[400px\\]:left-3/4 translate-y-8" : ""
-                  }`}
+                  } ${index === 1 ? "min-[400px]:left-3/4 translate-y-8" : ""}`}
                 >
                   {dog.breeds[0].name}
                 </h2>
