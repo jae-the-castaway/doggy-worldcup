@@ -1,9 +1,14 @@
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { lilitaOne } from "./fonts";
 import GraphBar from "./GraphBar";
 import Link from "next/link";
+
+import { lilitaOne } from "./fonts";
+
+interface MatchProps {
+  res: DogArray;
+}
 
 interface Dog {
   breeds: Array<{
@@ -19,7 +24,7 @@ interface Dog {
 
 type DogArray = Array<Dog>;
 
-export default function Match(res: any) {
+export default function Match({ res }: MatchProps ) {
   let list: DogArray = Object.keys(res).map((key) => {
     return res[key];
   })[0];
@@ -37,7 +42,7 @@ export default function Match(res: any) {
     if (
       round < 16 &&
       e.target.getAttribute("data-name") !==
-        candidates?.[candidates.length - 1].id
+        candidates[candidates.length - 1].id
     ) {
       const key = e.target.getAttribute("data-id");
       setTarget(key);
@@ -107,17 +112,17 @@ export default function Match(res: any) {
             </h2>
             <div className="z-50 flex flex-col items-center ">
               <h3 className="z-50  drop-shadow-md ">
-                {winner.breeds?.[0].weight.imperial
-                  ? `Height : ${winner.breeds?.[0].weight.imperial} in`
+                {winner?.breeds?.[0]?.weight?.imperial
+                  ? `Height : ${winner.breeds?.[0]?.weight?.imperial} in`
                   : ""}
               </h3>
               <h3 className="z-50   drop-shadow-md">
-                {winner.breeds?.[0].origin
-                  ? `Origin: ${winner.breeds?.[0].origin}`
+                {winner?.breeds?.[0]?.origin
+                  ? `Origin: ${winner.breeds?.[0]?.origin}`
                   : ""}
               </h3>
               <h3 className="z-50  drop-shadow-md ">
-                {winner.breeds?.[0].temperament}
+                {winner?.breeds?.[0]?.temperament}
               </h3>
             </div>
 
@@ -133,7 +138,7 @@ export default function Match(res: any) {
           </div>
         </div>
       ) : (
-        ""
+        null
       )}
       <div className=" h-10 z-10 text-center mb-2">
         <h1 className={`text-base ${lilitaOne.className}`}>Doggy Derby</h1>
