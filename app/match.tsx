@@ -25,11 +25,6 @@ interface Dog {
 type DogArray = Array<Dog>;
 
 export default function Match({ res }: MatchProps) {
-  // let list: DogArray = Object.keys(res).map((key) => {
-  //   return res[key];
-  // })[0];
-
-  // const firstCandidates: Dog[] = dogs.slice(0, 2);
 
   const [round, setRound] = useState<number>(0);
   const [roundName, setRoundName] = useState<string>("Round of 16");
