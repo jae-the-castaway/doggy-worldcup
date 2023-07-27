@@ -20,15 +20,16 @@ interface Dog {
 type DogArray = Array<Dog>;
 
 export default function Match(res: any) {
-  let dogs: DogArray = Object.keys(res).map((key) => {
+  let list: DogArray = Object.keys(res).map((key) => {
     return res[key];
   })[0];
-  const firstCandidates: Dog[] = dogs.slice(0, 2);
+
+  // const firstCandidates: Dog[] = dogs.slice(0, 2);
 
   const [round, setRound] = useState<number>(0);
   const [roundName, setRoundName] = useState<string>("Round of 16");
-  const [candidates, setCandidates] = useState<Dog[]>(dogs);
-  const [match, setMatch] = useState<Dog[]>(firstCandidates);
+  const [candidates, setCandidates] = useState<Dog[]>([]);
+  const [match, setMatch] = useState<Dog[]>(candidates.slice(0, 2));
   const [winner, setWinner] = useState<Dog | null>(null);
   const [target, setTarget] = useState<"0" | "1" | undefined>(undefined);
 
@@ -43,6 +44,10 @@ export default function Match(res: any) {
       setRound((prev) => prev + 1);
     }
   };
+
+  useEffect(() => {
+    setCandidates(list);
+  }, []);
 
   useEffect(() => {
     if (candidates.length > 1 && target) {
@@ -206,6 +211,3 @@ export default function Match(res: any) {
     </div>
   );
 }
-
-
-
